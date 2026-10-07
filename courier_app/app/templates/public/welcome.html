@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}SwiftCourier Express | Welcome{% endblock %}
+
+{% block content %}
+<div class="welcome-shell">
+  <div class="welcome-card">
+    <div class="welcome-icon"><i class="bi bi-box-seam"></i></div>
+    <h1>COURIER MANAGEMENT SYSTEM</h1>
+    <p class="subtitle">Bookings - Tracking - Delivery Updates - Reports</p>
+
+    <div class="welcome-panel">
+      <h2>Welcome to SwiftCourier Express</h2>
+      <ul>
+        <li>Book parcels quickly</li>
+        <li>Track every shipment by tracking number</li>
+        <li>Update delivery status with remarks</li>
+        <li>Manage customer records and export reports</li>
+      </ul>
+
+      <div class="welcome-actions">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Enter System <i class="bi bi-arrow-right"></i></a>
+      </div>
+
+      <form id="public-tracking-form" class="public-track-form">
+        <input id="public-tracking-number" type="text" placeholder="Enter tracking no" aria-label="Tracking number">
+        <button type="submit" class="btn btn-secondary">Track a Parcel</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('public-tracking-form');
+    if (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const tracking = document.getElementById('public-tracking-number').value.trim();
+        if (tracking) {
+          window.location.href = '/t/' + tracking;
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SwiftCourier Express{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}" media="print">
+  </head>
+  <body class="app-body">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon"><i class="bi bi-box-seam"></i></div>
+          <div>
+            <div class="brand-name">Courier Hub</div>
+          </div>
+        </div>
+        <div class="sidebar-label">Operations</div>
+        <nav class="nav-menu">
+          <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard.index') }}"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+          <a class="nav-link {% if request.path == '/book' %}active{% endif %}" href="{{ url_for('shipments.book_shipment_route') }}"><i class="bi bi-journal-check"></i><span>Book Shipment</span></a>
+          <a class="nav-link {% if request.path == '/track' %}active{% endif %}" href="{{ url_for('shipments.track') }}"><i class="bi bi-map"></i><span>Track / Update</span></a>
+          <a class="nav-link {% if request.path == '/customers' %}active{% endif %}" href="{{ url_for('customers.customers') }}"><i class="bi bi-people"></i><span>Customers</span></a>
+          <a class="nav-link {% if request.path == '/reports' %}active{% endif %}" href="{{ url_for('reports.reports') }}"><i class="bi bi-bar-chart"></i><span>Reports</span></a>
+          <a class="nav-link {% if request.path == '/settings' %}active{% endif %}" href="{{ url_for('settings.company_settings') }}"><i class="bi bi-gear"></i><span>Settings</span></a>
+          <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('public.about') }}"><i class="bi bi-info-circle"></i><span>About</span></a>
+        </nav>
+      </aside>
+
+      <div class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="mobile-menu-toggle" type="button" aria-label="Toggle Sidebar">
+              <i class="bi bi-list"></i>
+            </button>
+            <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+          </div>
+          <div class="topbar-right">
+            <span>Logged in: admin - {{ settings.company_name if settings else 'SwiftCourier Express' }}</span>
+            <a class="btn btn-danger" href="{{ url_for('auth.logout') }}">Logout</a>
+          </div>
+        </header>
+
+        <main class="content-area">
+          <div class="page-card">
+            {% include 'components/_flash.html' %}
+            <div class="page-header">
+              <h2>{% block card_title %}{% endblock %}</h2>
+            </div>
+            {% block content %}{% endblock %}
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

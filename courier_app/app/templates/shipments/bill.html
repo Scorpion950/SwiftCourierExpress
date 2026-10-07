@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% from 'components/_status_badge.html' import status_badge %}
+
+{% block title %}Shipment Bill / Slip{% endblock %}
+{% block page_title %}Shipment Bill / Slip{% endblock %}
+{% block card_title %}Shipment Bill / Slip{% endblock %}
+
+{% block content %}
+<div class="bill-actions no-print">
+  <button class="btn btn-primary" type="button" onclick="window.print()">Print Bill / Slip</button>
+  <a class="btn btn-secondary" href="{{ url_for('shipments.bill_download', tracking=parcel.tracking_number) }}">Save Bill HTML</a>
+</div>
+
+<div class="bill-document">
+  <div class="bill-header">
+    <div>
+      <h3>{{ settings.company_name if settings else 'SwiftCourier Express' }}</h3>
+      <p>{{ settings.tagline if settings else 'Fast. Safe. Reliable.' }}</p>
+      <p>{{ settings.address if settings else '123 Cargo Street, Colombo 03' }}</p>
+      <p>{{ settings.phone if settings else '9876543210' }}</p>
+    </div>
+    <div class="bill-meta">
+      <h4>Shipment Bill / Slip</h4>
+      <p><strong>Tracking:</strong> {{ parcel.tracking_number }}</p>
+      <p><strong>Date:</strong> {{ parcel.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+    </div>
+  </div>
+
+  <table class="bill-table">
+    <tr><th>Sender</th><td>{{ parcel.sender_name }} / {{ parcel.sender_phone }}</td></tr>
+    <tr><th>Receiver</th><td>{{ parcel.receiver_name }} / {{ parcel.receiver_phone }}</td></tr>
+    <tr><th>From</th><td>{{ parcel.origin }}</td></tr>
+    <tr><th>To</th><td>{{ parcel.destination }}</td></tr>
+    <tr><th>Parcel Type</th><td>{{ parcel.parcel_type }}</td></tr>
+    <tr><th>Service</th><td>{{ parcel.service_type }}</td></tr>
+    <tr><th>Weight</th><td>{{ parcel.parcel_info.weight_kg if parcel.parcel_info else 0 }} kg</td></tr>
+    <tr><th>Charge</th><td>Rs {{ '%.2f'|format(parcel.parcel_info.price if parcel.parcel_info else 0) }}</td></tr>
+    <tr><th>Status</th><td>{{ status_badge(parcel.status) }}</td></tr>
+  </table>
+
+  <div class="section-heading">Tracking History</div>
+  <ul class="history-list">
+    {% for item in history %}
+      <li>{{ item.timestamp.strftime('%d %b %Y, %H:%M') }} - {{ item.status }} - {{ item.remark or 'Status updated' }}</li>
+    {% endfor %}
+  </ul>
+
+  <div class="bill-footer">
+    <strong>Total Charge: Rs {{ '%.2f'|format(parcel.parcel_info.price if parcel.parcel_info else 0) }}</strong>
+  </div>
+</div>
+{% endblock %}

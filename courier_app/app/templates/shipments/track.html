@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% from 'components/_status_badge.html' import status_badge %}
+{% from 'components/_timeline.html' import tracking_timeline %}
+
+{% block title %}Track and Update Shipment{% endblock %}
+{% block page_title %}Track and Update Shipment{% endblock %}
+{% block card_title %}Track and Update Shipment{% endblock %}
+
+{% block content %}
+<div class="search-panel">
+  <form method="post" class="inline-form">
+    {{ track_form.hidden_tag() }}
+    {{ track_form.tracking_number(class_='form-control', placeholder='Tracking No') }}
+    {{ track_form.submit(class_='btn btn-primary') }}
+  </form>
+</div>
+
+{% if parcel %}
+<div class="section-card instruction-card">
+  <div class="detail-grid">
+    <div><strong>Route:</strong> {{ parcel.origin }} -> {{ parcel.destination }}</div>
+    <div><strong>Receiver:</strong> {{ parcel.receiver_name }}</div>
+    <div><strong>Charge:</strong> Rs {{ '%.2f'|format(parcel.parcel_info.price if parcel.parcel_info else 0) }}</div>
+    <div><strong>Status:</strong> {{ status_badge(parcel.status) }}</div>
+  </div>
+
+  <form method="post" class="status-form">
+    {{ update_form.hidden_tag() }}
+    <input type="hidden" name="tracking_number" value="{{ parcel.tracking_number }}">
+    <div class="status-control-row">
+      <div class="form-group compact">
+        <label for="new_status">New Status</label>
+        {{ update_form.new_status(class_='form-control') }}
+      </div>
+      <div class="form-group compact wide">
+        <label for="remark">Remark</label>
+        {{ update_form.remark(class_='form-control', placeholder='Remark') }}
+      </div>
+      {{ update_form.submit(class_='btn btn-primary') }}
+    </div>
+  </form>
+
+  <div class="timeline-wrap">
+    {{ tracking_timeline(history) }}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

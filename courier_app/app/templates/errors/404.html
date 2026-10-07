@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="error-shell">
+  <div class="error-card">
+    <h1>404</h1>
+    <p>The page you requested could not be found.</p>
+    <a href="{{ url_for('public.welcome') }}" class="btn btn-primary">Go Home</a>
+  </div>
+</div>
+{% endblock %}

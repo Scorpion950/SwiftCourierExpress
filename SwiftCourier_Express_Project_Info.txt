@@ -1,0 +1,161 @@
+SwiftCourier Express - Project Information
+=================================================================
+
+Project Description:
+This file contains the complete project documentation for SwiftCourier Express, a Python-based courier management system developed with Flask. The application is designed to manage parcel bookings, customer records, shipment tracking, billing, reports, and admin settings for a courier business. It serves as both a technical reference and a report/documentation file that can be converted into a Word document for academic or professional submission.
+
+Project Name:
+SwiftCourier Express Courier Management System
+
+Project Type:
+Full-stack web application built with Python + Flask for admin management and parcel tracking.
+
+Technology Stack:
+1. Backend: Python 3.11+
+2. Web Framework: Flask 3.0.3
+3. ORM: Flask-SQLAlchemy 3.1.1
+4. Authentication: Flask-Login 0.6.3
+5. Forms + CSRF: Flask-WTF 1.2.1
+6. Database Migrations: Flask-Migrate 4.0.7
+7. Database: PostgreSQL / Neon PostgreSQL
+8. Database driver: psycopg2-binary 2.9.9
+9. Environment variables: python-dotenv 1.0.1
+10. Web server for production: Gunicorn 22.0.0
+11. Frontend: HTML, CSS, JavaScript, Jinja2 templates
+12. Testing: pytest and pytest-flask
+13. Validation: email-validator, Werkzeug password hashing
+
+Project Architecture:
+- app/__init__.py: creates the Flask app using the application factory pattern
+- config.py: configuration for development, testing, and production
+- app/models/: database models for admin, customer, parcel, tracking, report, settings
+- app/routes/: login, dashboard, bookings, customer management, tracking, reports, settings
+- app/services/: business logic for shipment creation, tracking, reports, and settings
+- app/templates/: Jinja templates for all pages
+- app/static/: CSS and JS assets
+- tests/: automated tests for app behavior
+- seed.py: seeds the default admin and settings data
+- run.py: start server for local development
+- wsgi.py: Gunicorn production entry point
+
+Core Modules / Business Features:
+- Admin authentication and login
+- Dashboard with summary cards and recent shipments
+- Customer registration and management
+- Parcel booking and bill generation
+- Tracking and status updates
+- Public parcel tracking page
+- Report generation and CSV export
+- Company settings configuration
+- Error handling pages (404, database unavailable)
+
+Main Database Tables / Models:
+- Admin
+- Customer
+- Parcel
+- ParcelInfo
+- TrackParcel
+- Report
+- Settings
+
+Default Admin Login:
+- Email: admin@swiftcourier.com
+- Password: Admin@123
+
+Environment Setup:
+Create a .env file in the project root using .env.example as a template.
+Example values:
+DATABASE_URL=postgresql://USER:PASSWORD@HOST/DBNAME?sslmode=require
+SECRET_KEY=change-this-secret-key
+ADMIN_EMAIL=admin@swiftcourier.com
+ADMIN_PASSWORD=Admin@123
+
+How to run the project:
+1. Open terminal in project folder.
+2. Create and activate virtual environment:
+   py -3.11 -m venv .venv
+   .\.venv\Scripts\activate
+
+3. Install dependencies:
+   python -m pip install -r requirements.txt
+
+4. Create the .env file from .env.example and set your PostgreSQL connection.
+
+5. Initialize the database (if needed):
+   flask --app run run
+   OR
+   python run.py
+
+6. Seed the admin and default settings:
+   python seed.py
+
+7. Run the app:
+   python run.py
+
+8. Open in browser:
+   http://127.0.0.1:5000
+
+Production run command:
+   gunicorn wsgi:app
+
+Useful commands:
+- Install dependencies:
+  python -m pip install -r requirements.txt
+
+- Run tests:
+  .\.venv\Scripts\python -m pytest -q
+
+- Seed database:
+  .\.venv\Scripts\python seed.py
+
+- Start development server:
+  .\.venv\Scripts\python run.py
+
+- Start production server:
+  .\.venv\Scripts\gunicorn wsgi:app
+
+How to create a Word file (
+.docx) from this project information:
+Method 1: Open this .txt file in Microsoft Word:
+- Open Microsoft Word
+- File > Open > select SwiftCourier_Express_Project_Info.txt
+- Word will open the text file and you can edit formatting
+- Then click File > Save As > Word Document (*.docx)
+
+Method 2: Copy the content into Word:
+- Open a blank Word document
+- Copy all text from this .txt file
+- Paste it into Word
+- Save the file as .docx
+
+Method 3: Use Notepad / WordPad:
+- Open the .txt file
+- Copy content
+- Paste in Word
+- Save as .docx
+
+Recommended documentation layout for a Word report:
+- Title page
+- Introduction
+- Objectives
+- Tech stack
+- Modules and features
+- Database design
+- Screens and user flows
+- Installation steps
+- Run commands
+- Deployment notes
+- Conclusion
+
+Project status:
+The project is implemented and verified with tests. The test suite passed successfully using:
+- .\.venv\Scripts\python -m pytest -q
+- Result: 10 passed in 12.11s
+
+Developer notes:
+- The app uses the Flask application factory pattern.
+- Default environment is development mode.
+- The app is ready for local development and testing.
+
+End of Project Information
+=================================================================

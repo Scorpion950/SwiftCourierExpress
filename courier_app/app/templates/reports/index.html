@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+{% from 'components/_status_badge.html' import status_badge %}
+
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports{% endblock %}
+{% block card_title %}Shipment Reports{% endblock %}
+
+{% block content %}
+<div class="section-card">
+  <form method="post" class="report-filter">
+    {{ form.hidden_tag() }}
+    <div class="filter-row">
+      <div class="form-group compact">
+        <label for="from_date">From Date</label>
+        {{ form.from_date(class_='form-control') }}
+      </div>
+      <div class="form-group compact">
+        <label for="to_date">To Date</label>
+        {{ form.to_date(class_='form-control') }}
+      </div>
+      <div class="form-group compact">
+        <label for="status">Status</label>
+        {{ form.status(class_='form-control') }}
+      </div>
+      <button type="submit" class="btn btn-primary">Generate</button>
+    </div>
+  </form>
+
+  <div class="summary-row">
+    <div class="summary-chip">
+      <span class="summary-label">Total Shipments</span>
+      <strong>{{ total_shipments }}</strong>
+    </div>
+    <div class="summary-chip">
+      <span class="summary-label">Revenue</span>
+      <strong>Rs {{ '%.2f'|format(total_revenue) }}</strong>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Tracking</th>
+          <th>Date</th>
+          <th>Receiver</th>
+          <th>Route</th>
+          <th>Status</th>
+          <th>Charge</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for parcel in rows %}
+        <tr>
+          <td>{{ parcel.tracking_number }}</td>
+          <td>{{ parcel.created_at.strftime('%Y-%m-%d') }}</td>
+          <td>{{ parcel.receiver_name }}</td>
+          <td>{{ parcel.origin }} -> {{ parcel.destination }}</td>
+          <td>{{ status_badge(parcel.status) }}</td>
+          <td>Rs {{ '%.2f'|format(parcel.parcel_info.price if parcel.parcel_info else 0) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="action-row">
+    <a class="btn btn-primary" href="{{ url_for('reports.export_reports', from_date=request.args.get('from_date'), to_date=request.args.get('to_date'), status=request.args.get('status', 'all')) }}">Export Shipments CSV</a>
+    <button class="btn btn-danger" type="button" id="clear-shipments-trigger">Clear All Shipments</button>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="clear-shipments-modal" aria-hidden="true">
+  <div class="modal-box">
+    <h3>Confirm Clear</h3>
+    <p>Type DELETE to confirm.</p>
+    <form method="post" action="{{ url_for('reports.clear_shipments') }}">
+      <input type="text" class="form-control" name="confirmation" placeholder="DELETE" required>
+      <div class="button-row right-align">
+        <button type="button" class="btn btn-secondary" id="cancel-clear">Cancel</button>
+        <button type="submit" class="btn btn-danger">Confirm</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('clear-shipments-modal');
+    const openBtn = document.getElementById('clear-shipments-trigger');
+    const cancelBtn = document.getElementById('cancel-clear');
+    if (openBtn && modal) {
+      openBtn.addEventListener('click', function () {
+        modal.classList.add('visible');
+      });
+    }
+    if (cancelBtn && modal) {
+      cancelBtn.addEventListener('click', function () {
+        modal.classList.remove('visible');
+      });
+    }
+  });
+</script>
+{% endblock %}

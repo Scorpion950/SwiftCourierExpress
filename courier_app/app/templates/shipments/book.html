@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+{% from 'components/_status_badge.html' import status_badge %}
+
+{% block title %}Book Shipment{% endblock %}
+{% block page_title %}Book Shipment{% endblock %}
+{% block card_title %}Book Shipment{% endblock %}
+
+{% block content %}
+<div class="section-card form-card">
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="two-column-form">
+      <div class="form-group">
+        <label for="sender_name">Sender Name</label>
+        {{ form.sender_name(class_='form-control', list='sender-customer-list') }}
+      </div>
+      <div class="form-group">
+        <label for="sender_phone">Sender Phone</label>
+        {{ form.sender_phone(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="receiver_name">Receiver Name</label>
+        {{ form.receiver_name(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="receiver_phone">Receiver Phone</label>
+        {{ form.receiver_phone(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="origin">Origin</label>
+        {{ form.origin(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="destination">Destination</label>
+        {{ form.destination(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="parcel_type">Parcel Type</label>
+        {{ form.parcel_type(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="service_type">Service Type</label>
+        {{ form.service_type(class_='form-control') }}
+      </div>
+      <div class="form-group">
+        <label for="weight_kg">Weight (kg)</label>
+        {{ form.weight_kg(class_='form-control', min='0.1', step='0.1') }}
+      </div>
+      <div class="form-group">
+        <label for="charge">Charge (Rs)</label>
+        {{ form.charge(class_='form-control', min='0', step='0.01') }}
+      </div>
+      <div class="form-group">
+        <label for="length_cm">Length (cm)</label>
+        {{ form.length_cm(class_='form-control', min='1', step='0.1') }}
+      </div>
+      <div class="form-group">
+        <label for="width_cm">Width (cm)</label>
+        {{ form.width_cm(class_='form-control', min='1', step='0.1') }}
+      </div>
+      <div class="form-group">
+        <label for="height_cm">Height (cm)</label>
+        {{ form.height_cm(class_='form-control', min='1', step='0.1') }}
+      </div>
+    </div>
+
+    <datalist id="sender-customer-list">
+      {% for customer in customers %}
+      <option value="{{ customer.name }}">{{ customer.phone }}</option>
+      {% endfor %}
+    </datalist>
+
+    <div class="button-row">
+      {{ form.submit(class_='btn btn-primary') }}
+      <button type="reset" class="btn btn-secondary">Clear</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/book.js') }}"></script>
+{% endblock %}

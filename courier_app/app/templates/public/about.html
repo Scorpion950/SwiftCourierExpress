@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}About | SwiftCourier Express{% endblock %}
+
+{% block content %}
+<div class="public-page-shell">
+  <div class="public-card">
+    <div class="public-header">
+      <h1>{{ settings.company_name if settings else 'SwiftCourier Express' }}</h1>
+    </div>
+    <h2>About the System</h2>
+    <p>SwiftCourier Express is a courier management application designed to manage parcel bookings, customer data, delivery status tracking, and shipment reporting in a streamlined workflow.</p>
+    <p><strong>Version:</strong> 1.0.0</p>
+    <p><strong>Modules:</strong></p>
+    <ul>
+      <li>Bookings</li>
+      <li>Tracking and Update</li>
+      <li>Customers</li>
+      <li>Reports</li>
+      <li>Settings</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

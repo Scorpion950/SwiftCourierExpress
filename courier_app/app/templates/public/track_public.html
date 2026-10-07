@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% from 'components/_timeline.html' import tracking_timeline %}
+{% from 'components/_status_badge.html' import status_badge %}
+
+{% block title %}Track Parcel | SwiftCourier Express{% endblock %}
+
+{% block content %}
+<div class="public-page-shell">
+  <div class="public-card tracking-card">
+    <h1>{{ parcel.sender_name }} / {{ parcel.tracking_number }}</h1>
+    <div class="track-summary">
+      {{ status_badge(parcel.status) }}
+    </div>
+    <div class="tracking-meta">
+      <div><strong>Receiver:</strong> {{ parcel.receiver_name }}</div>
+      <div><strong>Route:</strong> {{ parcel.origin }} -> {{ parcel.destination }}</div>
+      <div><strong>Charge:</strong> Rs {{ parcel.parcel_info.price if parcel.parcel_info else 0 }}</div>
+    </div>
+    {{ tracking_timeline(history) }}
+  </div>
+</div>
+{% endblock %}

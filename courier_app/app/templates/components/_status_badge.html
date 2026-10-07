@@ -1,0 +1,4 @@
+{% macro status_badge(status) %}
+  {% set css_class = status|replace(' ', '-')|lower %}
+  <span class="status-pill status-{{ css_class }}">{{ status }}</span>
+{% endmacro %}
