@@ -16,6 +16,10 @@ env/
 # Local env files
 .env
 .env.*
+!.env.example
+
+# Local database files
+instance/
 
 # IDE/editor
 .vscode/

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | SwiftCourier Express{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <h1>SwiftCourier Express</h1>
+      <p>Fast. Safe. Reliable.</p>
+    </div>
+
+    <form method="post" class="auth-form" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        <label for="email">Username</label>
+        {{ form.email(class_='form-control', placeholder='Enter username') }}
+        {% if form.email.errors %}<span class="text-error">{{ form.email.errors[0] }}</span>{% endif %}
+      </div>
+
+      <div class="form-group password-field-wrap">
+        <label for="password">Password</label>
+        {{ form.password(class_='form-control', placeholder='Enter password', id='password-field') }}
+        <button type="button" class="password-toggle" aria-label="Show password"><i class="bi bi-eye"></i></button>
+        {% if form.password.errors %}<span class="text-error">{{ form.password.errors[0] }}</span>{% endif %}
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+      <a class="auth-back" href="{{ url_for('public.welcome') }}">Back</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="error-shell">
+  <div class="error-card">
+    <h1>Error connecting to your database</h1>
+    <p>DATABASE_URL is missing or the database is unreachable. Add a valid database URL to the .env file in the project folder, then restart the app.</p>
+  </div>
+</div>
+{% endblock %}

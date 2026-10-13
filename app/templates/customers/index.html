@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block title %}Customers{% endblock %}
+{% block page_title %}Customers{% endblock %}
+{% block card_title %}Customers{% endblock %}
+
+{% block content %}
+<div class="section-card">
+  <div class="top-row">
+    <form method="post" class="inline-form customer-form">
+      {{ form.hidden_tag() }}
+      {{ form.name(class_='form-control', placeholder='Name') }}
+      {{ form.phone(class_='form-control', placeholder='Phone') }}
+      {{ form.submit(class_='btn btn-primary') }}
+    </form>
+
+    <form method="get" class="inline-form search-form">
+      <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search">
+      <button class="btn btn-secondary" type="submit">Search</button>
+    </form>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Shipments count</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in customers %}
+        <tr>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ customer.parcels|length }}</td>
+          <td>
+            <form method="post" action="{{ url_for('customers.delete_customer_route', customer_id=customer.id) }}">
+              <input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
+              <button class="btn btn-danger btn-small" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

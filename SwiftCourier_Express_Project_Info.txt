@@ -2,7 +2,7 @@ SwiftCourier Express - Project Information
 =================================================================
 
 Project Description:
-This file contains the complete project documentation for SwiftCourier Express, a Python-based courier management system developed with Flask. The application is designed to manage parcel bookings, customer records, shipment tracking, billing, reports, and admin settings for a courier business. It serves as both a technical reference and a report/documentation file that can be converted into a Word document for academic or professional submission.
+This file contains the technical reference for SwiftCourier Express, a Python-based courier management system developed with Flask. The application is designed to manage parcel bookings, customer records, shipment tracking, billing, reports, and admin settings for a courier business.
 
 Project Name:
 SwiftCourier Express Courier Management System
@@ -18,144 +18,70 @@ Technology Stack:
 5. Forms + CSRF: Flask-WTF 1.2.1
 6. Database Migrations: Flask-Migrate 4.0.7
 7. Database: PostgreSQL / Neon PostgreSQL
-8. Database driver: psycopg2-binary 2.9.9
-9. Environment variables: python-dotenv 1.0.1
-10. Web server for production: Gunicorn 22.0.0
-11. Frontend: HTML, CSS, JavaScript, Jinja2 templates
-12. Testing: pytest and pytest-flask
-13. Validation: email-validator, Werkzeug password hashing
+Beginner Setup (Windows PowerShell):
 
-Project Architecture:
-- app/__init__.py: creates the Flask app using the application factory pattern
-- config.py: configuration for development, testing, and production
-- app/models/: database models for admin, customer, parcel, tracking, report, settings
-- app/routes/: login, dashboard, bookings, customer management, tracking, reports, settings
-- app/services/: business logic for shipment creation, tracking, reports, and settings
-- app/templates/: Jinja templates for all pages
-- app/static/: CSS and JS assets
-- tests/: automated tests for app behavior
-- seed.py: seeds the default admin and settings data
-- run.py: start server for local development
-- wsgi.py: Gunicorn production entry point
+Prerequisites:
+- Install Python 3.11 or later and enable the option to add Python to PATH.
+- Install Git if you are downloading the source from GitHub.
+- Create a PostgreSQL database, for example a Neon PostgreSQL project, and keep its connection string private.
 
-Core Modules / Business Features:
-- Admin authentication and login
-- Dashboard with summary cards and recent shipments
-- Customer registration and management
-- Parcel booking and bill generation
-- Tracking and status updates
-- Public parcel tracking page
-- Report generation and CSV export
-- Company settings configuration
-- Error handling pages (404, database unavailable)
+Where the .env file goes:
+- The actual .env file is not included in GitHub because it contains private credentials.
+- Create it in the top-level project folder, beside README.md, run.py, and requirements.txt.
+- The committed .env.example file is a safe template with placeholder values.
+- From PowerShell in the top-level project folder, create and open your local file:
+  Copy-Item .env.example .env
+  notepad .env
+- Replace the example values, save the file, and close Notepad. The root .gitignore excludes .env from Git.
+- Never share or commit a real database password, secret key, or admin password.
 
-Main Database Tables / Models:
-- Admin
-- Customer
-- Parcel
-- ParcelInfo
-- TrackParcel
-- Report
-- Settings
-
-Default Admin Login:
-- Email: admin@swiftcourier.com
-- Password: Admin@123
-
-Environment Setup:
-Create a .env file in the project root using .env.example as a template.
-Example values:
+Values to put in .env:
 DATABASE_URL=postgresql://USER:PASSWORD@HOST/DBNAME?sslmode=require
-SECRET_KEY=change-this-secret-key
-ADMIN_EMAIL=admin@swiftcourier.com
-ADMIN_PASSWORD=Admin@123
+SECRET_KEY=replace-with-a-long-random-secret
+ADMIN_EMAIL=your-admin-email@example.com
+ADMIN_PASSWORD=choose-a-strong-password
 
-How to run the project:
-1. Open terminal in project folder.
-2. Create and activate virtual environment:
+Install and run the project:
+1. Open PowerShell in the top-level project folder (the folder containing README.md).
+2. Create a Python virtual environment:
    py -3.11 -m venv .venv
-   .\.venv\Scripts\activate
-
-3. Install dependencies:
-   python -m pip install -r requirements.txt
-
-4. Create the .env file from .env.example and set your PostgreSQL connection.
-
-5. Initialize the database (if needed):
-   flask --app run run
-   OR
-   python run.py
-
-6. Seed the admin and default settings:
-   python seed.py
-
-7. Run the app:
-   python run.py
-
-8. Open in browser:
+3. Install every package listed in requirements.txt:
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+4. Create and edit .env as described above. Use the connection string provided by your PostgreSQL host.
+5. Create the database tables and configured admin/settings records:
+   .\.venv\Scripts\python.exe seed.py
+6. Start the development server:
+   .\.venv\Scripts\python.exe run.py
+7. Open the app in your browser:
    http://127.0.0.1:5000
+8. Stop the server by pressing Ctrl+C in PowerShell.
 
-Production run command:
-   gunicorn wsgi:app
+Useful Commands (from the top-level project folder):
+- Install packages: .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+- Seed the database: .\.venv\Scripts\python.exe seed.py
+- Start the app: .\.venv\Scripts\python.exe run.py
+- Run automated tests: .\.venv\Scripts\python.exe -m pytest -q
+- Start in production on Linux: gunicorn wsgi:app
 
-Useful commands:
-- Install dependencies:
-  python -m pip install -r requirements.txt
+Admin Login:
+Use the login identifier and password configured with ADMIN_EMAIL and ADMIN_PASSWORD in your private .env file. The identifier can be username-style. Set a strong password before running seed.py. There is no shared default password to use or publish.
 
-- Run tests:
-  .\.venv\Scripts\python -m pytest -q
+Important Notes:
+- requirements.txt lists the required Python packages; pip installs them into .venv.
+- PostgreSQL/Neon URLs should include sslmode=require.
+- The app uses Flask's application factory. run.py is the local entry point and wsgi.py is the production entry point.
+- The mobile hamburger menu is in app/templates/layout.html and app/static/js/app.js; route and template paths remain under the app package.
+- Do not upload .env, .venv, or local database files to GitHub.
 
-- Seed database:
-  .\.venv\Scripts\python seed.py
+Project Status:
+The test suite passed after the project files were moved to the repository root:
+- Command: .\.venv\Scripts\python.exe -m pytest -q
+- Result: 11 passed
 
-- Start development server:
-  .\.venv\Scripts\python run.py
-
-- Start production server:
-  .\.venv\Scripts\gunicorn wsgi:app
-
-How to create a Word file (
-.docx) from this project information:
-Method 1: Open this .txt file in Microsoft Word:
-- Open Microsoft Word
-- File > Open > select SwiftCourier_Express_Project_Info.txt
-- Word will open the text file and you can edit formatting
-- Then click File > Save As > Word Document (*.docx)
-
-Method 2: Copy the content into Word:
-- Open a blank Word document
-- Copy all text from this .txt file
-- Paste it into Word
-- Save the file as .docx
-
-Method 3: Use Notepad / WordPad:
-- Open the .txt file
-- Copy content
-- Paste in Word
-- Save as .docx
-
-Recommended documentation layout for a Word report:
-- Title page
-- Introduction
-- Objectives
-- Tech stack
-- Modules and features
-- Database design
-- Screens and user flows
-- Installation steps
-- Run commands
-- Deployment notes
-- Conclusion
-
-Project status:
-The project is implemented and verified with tests. The test suite passed successfully using:
-- .\.venv\Scripts\python -m pytest -q
-- Result: 10 passed in 12.11s
-
-Developer notes:
-- The app uses the Flask application factory pattern.
-- Default environment is development mode.
-- The app is ready for local development and testing.
+Developer Notes:
+- app/__init__.py creates the Flask application and registers routes, CLI commands, extensions, and error handlers.
+- seed.py creates missing tables and inserts the admin/settings records configured in .env.
+- The local development server uses port 5000 by default.
 
 End of Project Information
 =================================================================
