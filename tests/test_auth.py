@@ -58,3 +58,4 @@ def test_about_page_uses_dashboard_sidebar(client):
     assert b"About SwiftCourier Express" in response.data
     assert b"Generate shipment reports by date and status" in response.data
     assert b"timestamped history of shipment status changes" in response.data
+    assert b'<a class="sidebar-brand" href="/dashboard">' in response.data

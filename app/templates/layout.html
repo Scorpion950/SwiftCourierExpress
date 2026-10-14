@@ -14,12 +14,12 @@
   <body class="app-body">
     <div class="app-shell">
       <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
+        <a class="sidebar-brand" href="{{ url_for('dashboard.index') }}">
           <div class="brand-icon"><i class="bi bi-box-seam"></i></div>
           <div>
             <div class="brand-name">Courier Hub</div>
           </div>
-        </div>
+        </a>
         <div class="sidebar-label">Operations</div>
         <nav class="nav-menu">
           <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard.index') }}"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
