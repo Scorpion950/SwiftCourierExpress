@@ -10,6 +10,16 @@ def test_login_page_loads(client):
     assert b"SwiftCourier Express" in response.data
 
 
+def test_invalid_login_message_is_shown_on_login_page(client):
+    response = client.post(
+        "/login",
+        data={"email": "wrong@example.com", "password": "wrong-password"},
+    )
+
+    assert response.status_code == 200
+    assert b"Invalid username or password." in response.data
+
+
 def test_login_success(client):
     response = client.post(
         "/login",
