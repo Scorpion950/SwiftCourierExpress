@@ -6,10 +6,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _database_uri():
+    uri = os.getenv("DATABASE_URL", "sqlite:///swiftcourier.db")
+    if uri.startswith("postgresql://"):
+        return uri.replace("postgresql://", "postgresql+psycopg2://", 1)
+    return uri
+
+
 class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
     DATABASE_CONFIGURED = bool(os.getenv("DATABASE_URL"))
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///swiftcourier.db")
+    SQLALCHEMY_DATABASE_URI = _database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
     WTF_CSRF_ENABLED = True

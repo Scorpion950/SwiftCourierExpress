@@ -9,6 +9,18 @@
 <div class="section-card form-card">
   <form method="post" novalidate>
     {{ form.hidden_tag() }}
+    {% if form.errors %}
+    <div class="form-errors" role="alert">
+      <p>Shipment was not booked. Correct these fields and submit again:</p>
+      <ul>
+        {% for field_name, errors in form.errors.items() %}
+          {% for error in errors %}
+          <li>{{ form[field_name].label.text }}: {{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
     <div class="two-column-form">
       <div class="form-group">
         <label for="sender_name">Sender Name</label>

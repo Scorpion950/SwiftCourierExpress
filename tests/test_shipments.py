@@ -52,6 +52,31 @@ def test_book_shipment_displays_and_persists_tracking_number(client, app):
     assert tracking_number.encode() in dashboard.data
 
 
+def test_invalid_booking_displays_field_errors(client):
+    login_admin(client)
+    response = client.post(
+        "/book",
+        data={
+            "sender_name": "Alice Test",
+            "sender_phone": "1234567890",
+            "receiver_name": "Bob Test",
+            "receiver_phone": "0987654321",
+            "origin": "Colombo",
+            "destination": "Kandy",
+            "parcel_type": "Documents",
+            "service_type": "Express",
+            "weight_kg": 2.5,
+            "length_cm": 20,
+            "width_cm": 15,
+            "height_cm": 10,
+        },
+    )
+
+    assert response.status_code == 200
+    assert b"Shipment was not booked" in response.data
+    assert b"Charge (Rs): This field is required" in response.data
+
+
 def test_track_page(client):
     login_admin(client)
     response = client.get("/track")
