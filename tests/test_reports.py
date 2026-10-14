@@ -1,8 +1,10 @@
 """Report generation tests."""
 
+import re
 from datetime import date
 
 from app.extensions import db
+from app.models.admin import Admin
 from app.models.parcel import Parcel
 from app.models.report import Report
 
@@ -16,6 +18,38 @@ def test_reports_page_loads(client):
     response = client.get("/reports")
     assert response.status_code == 200
     assert b"Shipment Reports" in response.data
+
+
+def test_clear_shipments_form_sends_valid_csrf_token(client, app):
+    app.config["WTF_CSRF_ENABLED"] = True
+    with app.app_context():
+        admin_id = db.session.query(Admin).filter_by(email="admin@example.com").one().id
+    with client.session_transaction() as session:
+        session["_user_id"] = str(admin_id)
+        session["_fresh"] = True
+
+    response = client.get("/reports")
+    assert response.status_code == 200
+    page = response.get_data(as_text=True)
+    clear_form = re.search(
+        r'<form method="post" action="/reports/clear">(.*?)</form>',
+        page,
+        re.DOTALL,
+    )
+    assert clear_form is not None
+    csrf_match = re.search(
+        r'<input[^>]*name="csrf_token"[^>]*value="([^"]+)"', clear_form.group(1)
+    )
+    assert csrf_match is not None
+
+    rejected = client.post("/reports/clear", data={"confirmation": "DELETE"})
+    assert rejected.status_code == 400
+
+    accepted = client.post(
+        "/reports/clear",
+        data={"confirmation": "DELETE", "csrf_token": csrf_match.group(1)},
+    )
+    assert accepted.status_code == 302
 
 
 def test_report_generation_and_csv_export_with_date_filters(client, app):

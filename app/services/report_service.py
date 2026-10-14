@@ -5,6 +5,7 @@ import io
 from datetime import date, datetime, time, timedelta
 
 from flask import Response
+from sqlalchemy.orm import contains_eager
 
 from app.extensions import db
 from app.models.parcel import Parcel
@@ -14,7 +15,11 @@ from app.models.report import Report
 
 def get_report_rows(from_date=None, to_date=None, status="all"):
     """Query parcel rows for report generation."""
-    query = db.session.query(Parcel).join(ParcelInfo, Parcel.id == ParcelInfo.parcel_id)
+    query = (
+        db.session.query(Parcel)
+        .join(ParcelInfo, Parcel.id == ParcelInfo.parcel_id)
+        .options(contains_eager(Parcel.parcel_info))
+    )
 
     if from_date:
         if isinstance(from_date, str):

@@ -75,6 +75,7 @@
     <h3>Confirm Clear</h3>
     <p>Type DELETE to confirm.</p>
     <form method="post" action="{{ url_for('reports.clear_shipments') }}">
+      {{ form.csrf_token }}
       <input type="text" class="form-control" name="confirmation" placeholder="DELETE" required>
       <div class="button-row right-align">
         <button type="button" class="btn btn-secondary" id="cancel-clear">Cancel</button>

@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 from app.extensions import db
 from app.models.customer import Customer
@@ -19,7 +20,13 @@ def get_dashboard_data():
     delivered = db.session.query(Parcel).filter(Parcel.status == "Delivered").count()
     customers = db.session.query(Customer).count()
     revenue_sum = db.session.query(func.coalesce(func.sum(ParcelInfo.price), 0)).join(Parcel, Parcel.id == ParcelInfo.parcel_id).scalar() or 0
-    recent_shipments = db.session.query(Parcel).order_by(Parcel.created_at.desc()).limit(5).all()
+    recent_shipments = (
+        db.session.query(Parcel)
+        .options(joinedload(Parcel.parcel_info))
+        .order_by(Parcel.created_at.desc())
+        .limit(5)
+        .all()
+    )
 
     return {
         "total_shipments": total_shipments,
